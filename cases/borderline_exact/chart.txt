@@ -1,0 +1,18 @@
+SYNTHETIC TEST DATA - fictional patient, not a real medical record.
+Patient: Taylor Brooks (synthetic)        DOB: 02/11/1976        MRN: SYN-0005
+
+=== 03/02/2026 | Physical Therapy Initial Evaluation | Jordan Kim, PT ===
+Physical therapy initial evaluation for low back pain radiating to the right leg.
+Pain 7/10. Neurologic screen normal.
+Plan: physical therapy 2x/week for 6 weeks with a home exercise program.
+
+=== 03/23/2026 | Physical Therapy Progress Note | Jordan Kim, PT ===
+Completed 6 physical therapy sessions. Pain remains 7/10. No improvement.
+
+=== 04/13/2026 | Physical Therapy Discharge Summary | Jordan Kim, PT ===
+Final physical therapy session today. Completed 6 weeks of physical therapy
+(03/02/2026 to 04/13/2026), 12 sessions. No improvement. Pain 7/10.
+
+=== 04/15/2026 | Primary Care Follow-up | Morgan Lee, MD ===
+Low back pain with right leg radiation persists despite 6 weeks of physical therapy.
+Pain 7/10. Ordering MRI lumbar spine without contrast.

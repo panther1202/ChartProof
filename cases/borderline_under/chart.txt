@@ -1,0 +1,18 @@
+SYNTHETIC TEST DATA - fictional patient, not a real medical record.
+Patient: Jamie Santos (synthetic)        DOB: 07/22/1981        MRN: SYN-0004
+
+=== 01/05/2026 | Physical Therapy Initial Evaluation | Jordan Kim, PT ===
+Physical therapy initial evaluation for low back pain radiating to the left leg.
+Pain 7/10. Neurologic screen normal.
+Plan: physical therapy 2x/week for 6 weeks with a home exercise program.
+
+=== 01/26/2026 | Physical Therapy Progress Note | Jordan Kim, PT ===
+Completed 6 physical therapy sessions. Pain 7/10. Lumbar flexion unchanged.
+
+=== 02/14/2026 | Physical Therapy Discharge Summary | Jordan Kim, PT ===
+Final physical therapy session today. Completed 11 sessions over 5 weeks and 5 days
+(01/05/2026 to 02/14/2026). Pain 7/10. Discharged from physical therapy.
+
+=== 02/19/2026 | Primary Care Follow-up | Morgan Lee, MD ===
+Follow-up for low back pain after physical therapy. No improvement. Pain 7/10.
+Ordering MRI lumbar spine without contrast.

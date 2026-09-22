@@ -1,0 +1,21 @@
+SYNTHETIC TEST DATA - fictional patient, not a real medical record.
+Pt: Riley Okafor (synthetic)   DOB 11/30/1972   MRN SYN-0003
+
+=== 01/12/2026 | PCP | M. Lee MD ===
+CC: LBP x3wk after lifting, radiating R leg.
+Neuro intact, SLR neg. Start naproxen 500mg BID. Ref PT.
+
+=== 01/19/2026 | PT eval | J. Kim PT ===
+LBP w/ R LE radiation. Pain 7/10.
+POC: PT 2x/wk x6wk + HEP.
+
+=== 02/10/2026 | PCP | M. Lee MD ===
+URI sx x3d, afebrile, lungs clear. Supportive care.
+
+=== 03/02/2026 | PT d/c summary | J. Kim PT ===
+PT d/c'd after 6wk course (12 visits), no relief. Pain 7/10.
+Pt did all visits + HEP.
+
+=== 03/05/2026 | PCP f/u | M. Lee MD ===
+LBP w/ R leg sx persists. NSAIDs x6wk + PT x6wk, no relief. Pain 7/10.
+Order MRI L-spine w/o contrast.

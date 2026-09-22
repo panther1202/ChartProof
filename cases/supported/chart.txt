@@ -1,0 +1,26 @@
+SYNTHETIC TEST DATA - fictional patient, not a real medical record.
+Patient: Alex Rivera (synthetic)        DOB: 05/14/1978        MRN: SYN-0001
+
+=== 02/23/2026 | Primary Care Visit | Morgan Lee, MD ===
+Low back pain radiating to the right leg for 5 weeks after lifting boxes at work.
+Neurologic exam normal: strength 5/5, reflexes symmetric, sensation intact.
+Referred to physical therapy.
+
+=== 03/02/2026 | Physical Therapy Initial Evaluation | Jordan Kim, PT ===
+Physical therapy initial evaluation for low back pain with right leg radiation.
+Pain 7/10. Lumbar flexion limited to 50 percent.
+Plan: physical therapy 2x/week for 6 to 8 weeks with a daily home exercise program.
+
+=== 03/23/2026 | Physical Therapy Progress Note | Jordan Kim, PT ===
+Completed 6 physical therapy sessions. Pain remains 7/10.
+No improvement in lumbar range of motion. Home exercise program performed daily.
+
+=== 04/20/2026 | Physical Therapy Discharge Summary | Jordan Kim, PT ===
+Completed 7 weeks of physical therapy (03/02/2026 to 04/20/2026), 14 sessions.
+No improvement. Pain 7/10 at rest and with activity.
+Home exercise program performed daily without benefit.
+
+=== 04/22/2026 | Primary Care Follow-up | Morgan Lee, MD ===
+Low back pain with right leg radiation persists despite 7 weeks of physical therapy
+and a daily home exercise program. Pain 7/10.
+Ordering MRI lumbar spine without contrast.

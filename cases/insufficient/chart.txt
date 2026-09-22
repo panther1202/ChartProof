@@ -1,0 +1,22 @@
+SYNTHETIC TEST DATA - fictional patient, not a real medical record.
+Patient: Casey Nguyen (synthetic)        DOB: 09/03/1985        MRN: SYN-0002
+
+=== 02/02/2026 | Physical Therapy Initial Evaluation | Jordan Kim, PT ===
+Physical therapy initial evaluation for low back pain, onset 4 weeks ago.
+Pain 6/10. Neurologic screen normal.
+Plan: physical therapy 2x/week for 6 weeks with a home exercise program.
+
+=== 02/09/2026 | Physical Therapy Visit | Jordan Kim, PT ===
+Pain 6/10. Tolerated core stabilization exercises.
+
+=== 02/16/2026 | Physical Therapy Visit | Jordan Kim, PT ===
+Pain 6/10. Home exercise program reviewed.
+
+=== 02/23/2026 | Physical Therapy Visit | Jordan Kim, PT ===
+Pain 6/10. Completed today's session of core stabilization exercises.
+Patient declined further PT, citing scheduling conflicts.
+Discharged from physical therapy after 3 weeks.
+
+=== 02/25/2026 | Primary Care Visit | Morgan Lee, MD ===
+Low back pain persists, 6/10. Neurologic exam normal.
+Patient requests imaging. Ordering MRI lumbar spine without contrast.

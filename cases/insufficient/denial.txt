@@ -1,0 +1,18 @@
+SYNTHETIC TEST DATA - fictional denial letter, not a real health plan communication.
+Example Health Plan (fictional) - Utilization Management Department
+Date: 03/03/2026
+
+Member: Casey Nguyen (synthetic)        Member ID: SYN-0002
+Ordering provider: Morgan Lee, MD (synthetic)
+Requested service: MRI lumbar spine without contrast (CPT 72148)
+
+DETERMINATION: DENIED - not medically necessary
+
+Your prior authorization request was reviewed against the NIA Clinical Guideline for
+Lumbar Spine MRI (NIA_CG_044), Indications for Lumbar Spine MRI, "For evaluation of back
+pain". The guideline requires "Failure of conservative treatment for at least six (6)
+weeks within the last six (6) months." The records submitted document physical therapy
+for less than six weeks.
+
+You or your provider may appeal this decision within 60 days by submitting additional
+clinical documentation.

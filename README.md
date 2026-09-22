@@ -1,4 +1,6 @@
-# Prior-authorization denial appeal drafter (v0)
+# ChartProof
+
+Drafts prior-auth appeals where every claim is a verified quote from the chart.
 
 Reads a denial letter, the payer policy PDF and a patient chart, then prints one of two things:
 

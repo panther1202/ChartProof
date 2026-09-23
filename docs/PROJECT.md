@@ -69,7 +69,7 @@ Each rule lists the reason it exists and the commit that shipped it.
 | Policy text is cleaned for display only | Footnote markers and PDF glyphs leaked into letters; verification still uses the raw text. | `e169ac1` |
 | Provider-agnostic via OpenRouter | Gemini's free tier hit 503s and a 20-requests-a-day cap; swapping models is one setting. | `5f18ba7` |
 | Policy PDF is downloaded, not committed | The guideline is copyrighted. | `5f18ba7` |
-| Every result row carries a commit hash | Results from uncommitted or mixed code versions are not comparable. | `ccea765` |
+| Every result row carries a commit hash; a change commit's own row says `pending` until the next doc-only commit fills it in | Results from uncommitted or mixed code versions are not comparable, and a commit cannot contain its own hash. | `ccea765`; `pending` convention `fe383f9` |
 | End-to-end tests run only when `CHARTPROOF_LLM=1` is set on the command line; plain `pytest` is offline | Skipping on key presence failed open: `appeal.py` loads `.env` at import, so plain `pytest` called the LLM, and PowerShell cannot blank a key (an empty assignment deletes it and `.env` refills it). | `6e62ac2` |
 | The opt-in is read before `.env` loads, so a `.env` line cannot turn it on; once opted in, a missing key or `data/policy.pdf` fails the tests instead of skipping them | Read after `.env`, one `CHARTPROOF_LLM=1` line there reopened the fail-open; a silent skip exits 0 and could be logged as a pass. | `60e11ac` |
 

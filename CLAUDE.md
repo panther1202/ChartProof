@@ -26,9 +26,12 @@ Before any commit:
 - docs/PROJECT.md is updated in the same commit if behaviour, tests or results changed:
   a Results log row with the hash, and a Design decisions row for any new rule. Never mark
   a rule as shipped before its commit exists.
-  A commit cannot contain its own hash, so the change commit writes `pending` in those hash
-  cells and in the outcome of any run not yet made at that hash. The next commit, doc-only,
-  replaces each `pending` once the checks have run against that hash.
+  A commit cannot contain its own hash, so a change commit writes `pending` in its own hash
+  cells (Results log Commit, Design decisions Shipped in) and in the outcome of any offline
+  check not yet run at that hash. After running those checks against the hash, the next
+  commit, doc-only, replaces each `pending`; it needs no row of its own. An LLM run happens
+  only on a clean tree (see Before any LLM run), so its row names that hash directly and
+  never says `pending`. `grep -n '| pending |' docs/PROJECT.md` lists what is still open.
 Always:
 - Never read ground_truth/ except inside score_blind.py when I run it.
 - Never edit expected.json values to match pipeline output. On a mismatch, report and stop.

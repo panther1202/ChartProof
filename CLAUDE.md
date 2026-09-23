@@ -69,3 +69,17 @@ its stated finish line, stop and tell me.
 # ChartProof
 
 Any commit that changes pipeline behaviour, tests or results also updates docs/PROJECT.md in the same commit: a Results log row with the commit hash, and a Design decisions row for any new rule. Never mark a rule as shipped before its commit. Hash cells follow the `pending` convention under Hard gates.
+
+## Agent skills
+
+### Issue tracker
+
+GitHub Issues on panther1202/ChartProof, via the `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+The five default labels: needs-triage, needs-info, ready-for-agent, ready-for-human, wontfix. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: `CONTEXT.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.

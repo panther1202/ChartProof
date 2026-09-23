@@ -12,6 +12,7 @@ import os
 import re
 import sys
 import time
+import unicodedata
 from datetime import date, datetime
 from functools import cache
 from pathlib import Path
@@ -24,8 +25,12 @@ from pydantic import BaseModel, ValidationError
 from pypdf import PdfReader
 
 MODEL = "gemini-3.8-flash"  # latest stable Flash per https://ai.google.dev/gemini-api/docs/models
-# ponytail: assumes each chart note starts with a line like "=== 03/02/2026 | ..."; real EHR exports need their own header pattern.
-NOTE_HEADER = re.compile(r"^=+\s*(\d{1,2}/\d{1,2}/\d{4})", re.M)
+DATE = r"\d{1,2}/\d{1,2}/\d{4}|\d{4}-\d{2}-\d{2}"  # MM/DD/YYYY or YYYY-MM-DD
+# ponytail: a chart note starts with "=== 03/02/2026 | ... ===", "=== 2026-03-02 ... ===" or a line holding only a date;
+# real EHR exports need their own header pattern.
+NOTE_HEADER = re.compile(rf"^(?:=+[ \t]*({DATE})\b.*|[ \t]*({DATE})[ \t]*)$", re.M)
+DENIAL_DATE = re.compile(rf"^[ \t]*(?:Review[ \t]+)?Date:[ \t]*({DATE})", re.M | re.I)
+QUOTE_MARK = r"``|''|[\"'`‘’“”]"  # straight, curly and LaTeX-style quote marks, all treated as equal
 NUMBERS = {w: i for i, w in enumerate("one two three four five six seven eight nine ten eleven twelve".split(), 1)}
 
 # Load KEY=value lines from .env into the environment; variables already set win.
@@ -177,16 +182,33 @@ def find_evidence(chart_text: str, criterion_text: str) -> list[dict]:
 
 
 def _parse_date(s: str) -> date | None:
-    try:
-        return datetime.strptime(s.strip(), "%m/%d/%Y").date()
-    except ValueError:
-        return None
+    """MM/DD/YYYY or YYYY-MM-DD. Dates are ISO internally; _us() formats them for letters and prompts."""
+    for fmt in ("%m/%d/%Y", "%Y-%m-%d"):
+        try:
+            return datetime.strptime(s.strip(), fmt).date()
+        except ValueError:
+            pass
+    return None
+
+
+def _us(s: str) -> str:
+    return f"{_parse_date(s):%m/%d/%Y}"
+
+
+def _note_headers(chart_text: str) -> list[tuple[int, date | None]]:
+    """(start position, date) of every chart note header."""
+    return [(m.start(), _parse_date(m[1] or m[2])) for m in NOTE_HEADER.finditer(chart_text)]
+
+
+def _denial_date(denial_text: str) -> date | None:
+    m = DENIAL_DATE.search(denial_text)
+    return _parse_date(m[1]) if m else None
 
 
 def _locate(quote: str, source: str) -> list[re.Match]:
-    """Every occurrence of quote in source, ignoring case and whitespace differences."""
-    words = quote.split()
-    return list(re.finditer(r"\s+".join(map(re.escape, words)), source, re.I)) if words else []
+    """Every occurrence of quote in source, ignoring case, whitespace and quote-mark style differences."""
+    words = [f"(?:{QUOTE_MARK})".join(map(re.escape, re.split(QUOTE_MARK, w))) for w in quote.split()]
+    return list(re.finditer(r"\s+".join(words), source, re.I)) if words else []
 
 
 def _date_at(headers: list[tuple[int, date | None]], pos: int) -> date | None:
@@ -200,14 +222,14 @@ def verify(evidence: list[dict], chart_text: str, policy_text: str, criterion: d
     """Plain Python, no LLM. Keep evidence whose quote is in the chart note dated note_date and check
     the policy quote is in the policy. Kept quotes are replaced by the exact source text they matched.
     Returns (kept_evidence, criterion or None if its quote is not in the policy)."""
-    headers = [(m.start(), _parse_date(m[1])) for m in NOTE_HEADER.finditer(chart_text)]
+    headers = _note_headers(chart_text)
     kept = []
     for item in evidence:
         claimed = _parse_date(item["note_date"])
         matches = _locate(item["quote"], chart_text)
         hit = next((m for m in matches if claimed and _date_at(headers, m.start()) == claimed), None)
         if hit:
-            kept.append({**item, "quote": " ".join(hit[0].split()), "note_date": f"{claimed:%m/%d/%Y}"})
+            kept.append({**item, "quote": " ".join(hit[0].split()), "note_date": claimed.isoformat()})
             continue
         if not matches:
             reason = "quote not found in chart"
@@ -241,6 +263,15 @@ def _heading_above(policy_text: str, quote: str) -> str | None:
     return None
 
 
+def _display(policy_text: str) -> str:
+    """Policy text as shown in letters: no PDF private-use glyphs (e.g. the U+F0B7 bullet), footnote asterisks
+    or trailing footnote digits ("months16"). Verification always uses the raw text."""
+    text = "".join(c for c in policy_text if unicodedata.category(c) != "Co")  # Co = private use
+    text = re.sub(r"(?<=\w)\*+", "", text)
+    text = re.sub(r"(?<=[^\W\d])\d+(?=\W*$)", "", text.strip())
+    return " ".join(text.split())
+
+
 def _amount(unit: str, text: str) -> int | None:
     """Number before unit, e.g. 'six (6) weeks' or '6 weeks' -> 6."""
     m = re.search(rf"\b(\d+|{'|'.join(NUMBERS)})\s*(?:\(\d+\)\s*)?{unit}", text, re.I)
@@ -261,7 +292,7 @@ def decide(verified_evidence: list[dict], criterion_text: str, denial_date: date
         return {**decision, "reason": "No chart evidence survived verification.",
                 "missing": ["Chart notes documenting the treatment required by the criterion"]}
 
-    listing = "\n".join(f'{i}. [{e["note_date"]}] "{e["quote"]}" - {e["claim"]}' for i, e in enumerate(verified_evidence))
+    listing = "\n".join(f'{i}. [{_us(e["note_date"])}] "{e["quote"]}" - {e["claim"]}' for i, e in enumerate(verified_evidence))
     j = ask(
         f'Criterion: "{criterion_text}"\n\nVerified chart evidence (id, note date, quote - claim):\n{listing}\n\n'
         "Return JSON: `treatment_items` = ids documenting conservative treatment delivered or under way on "
@@ -299,12 +330,12 @@ def decide(verified_evidence: list[dict], criterion_text: str, denial_date: date
         decision["weeks"] = round(days / 7, 1)
         if weeks_needed and days < weeks_needed * 7:
             problems.append(f"Verified treatment sessions span only {days / 7:.1f} weeks "
-                            f"({sessions[0]['note_date']} to {sessions[-1]['note_date']}); the criterion requires at least {weeks_needed} weeks.")
+                            f"({_us(sessions[0]['note_date'])} to {_us(sessions[-1]['note_date'])}); the criterion requires at least {weeks_needed} weeks.")
             missing.append(f"Notes documenting at least {weeks_needed} weeks of conservative treatment"
                            + (f" within the last {months} months" if months else ""))
         elif months and (not counted or (weeks_needed and span(counted) < weeks_needed * 7)):
             inside = f"only {span(counted) / 7:.1f} weeks of it falls" if counted else "none of it falls"
-            problems.append(f"Verified treatment ran {sessions[0]['note_date']} to {sessions[-1]['note_date']}, but {inside} "
+            problems.append(f"Verified treatment ran {_us(sessions[0]['note_date'])} to {_us(sessions[-1]['note_date'])}, but {inside} "
                             f"inside the {months}-month window before the denial date {denial_date:%m/%d/%Y} "
                             f"(window starts {cutoff:%m/%d/%Y}).")
             missing.append(f"Notes documenting conservative treatment after {cutoff:%m/%d/%Y}"
@@ -315,7 +346,7 @@ def decide(verified_evidence: list[dict], criterion_text: str, denial_date: date
         problems.append("No verified chart evidence that conservative treatment failed.")
         missing.append("A note documenting lack of improvement after treatment")
     for e in contrary:
-        problems.append(f'Chart note {e["note_date"]} says "{e["quote"]}" ({e["claim"].rstrip(".")}).')
+        problems.append(f'Chart note {_us(e["note_date"])} says "{e["quote"]}" ({e["claim"].rstrip(".")}).')
     if problems and j.missing:
         missing.append(j.missing)
 
@@ -330,8 +361,8 @@ def decide(verified_evidence: list[dict], criterion_text: str, denial_date: date
 # 6
 def draft_letter(service: str, criterion: dict, decision: dict) -> str:
     """Built only from verified evidence; every claim is followed by its citation."""
-    policy = f"[Policy §{criterion['section']}]"
-    cite = lambda e: f'[Chart: {e["note_date"]} "{e["quote"]}"]'
+    policy = f"[Policy §{_display(criterion['section'])}]"
+    cite = lambda e: f'[Chart: {_us(e["note_date"])} "{e["quote"]}"]'
     lines = [
         "APPEAL OF PRIOR AUTHORIZATION DENIAL",
         f"Re: {service}",
@@ -339,14 +370,14 @@ def draft_letter(service: str, criterion: dict, decision: dict) -> str:
         "To the Utilization Management reviewer:",
         "",
         f"We request reconsideration of the denial of {service}. The applicable criterion is "
-        f'"{criterion["criterion_text"]}" {policy}. The medical record documents that it is met:',
+        f'"{_display(criterion["criterion_text"])}" {policy}. The medical record documents that it is met:',
         "",
     ]
     for e in sorted(decision["supporting"], key=lambda e: _parse_date(e["note_date"])):
         lines.append(f"- {e['claim'].rstrip('.')} {cite(e)}")
     if decision["weeks_needed"]:
         first, last = decision["first"], decision["last"]
-        lines.append(f"- Conservative treatment sessions are documented from {first['note_date']} to {last['note_date']}, "
+        lines.append(f"- Conservative treatment sessions are documented from {_us(first['note_date'])} to {_us(last['note_date'])}, "
                      f"{decision['days']} days ({decision['days'] / 7:.1f} weeks), meeting the required minimum of "
                      f"{decision['weeks_needed']} weeks {cite(first)} {cite(last)} {policy}")
     lines += ["", "Because the documented conservative treatment did not relieve the patient's symptoms, "
@@ -357,7 +388,7 @@ def draft_letter(service: str, criterion: dict, decision: dict) -> str:
 def insufficient_report(criterion: dict, decision: dict) -> str:
     return "\n".join(
         ["INSUFFICIENT DOCUMENTATION",
-         f'Unmet criterion: "{criterion["criterion_text"]}" [Policy §{criterion["section"]}]',
+         f'Unmet criterion: "{_display(criterion["criterion_text"])}" [Policy §{_display(criterion["section"])}]',
          f"Reason: {decision['reason']}",
          "Missing evidence:"] + [f"- {m}" for m in decision["missing"]]
     )
@@ -367,6 +398,12 @@ def run(denial_path, policy_path, chart_path) -> tuple[str, dict]:
     """Returns (letter or insufficiency report, decision)."""
     denial_text = Path(denial_path).read_text(encoding="utf-8")
     chart_text = Path(chart_path).read_text(encoding="utf-8")
+    # A parse failure must never become a verdict: stop before any LLM call.
+    if not any(d for _, d in _note_headers(chart_text)):
+        raise SystemExit(f"INPUT ERROR: no dated note headers found in chart {chart_path}")
+    denial_date = _denial_date(denial_text)
+    if not denial_date:
+        raise SystemExit(f"INPUT ERROR: no 'Date:' or 'Review date:' line with a date found in denial {denial_path}")
     policy_text = "\n".join(page.extract_text() or "" for page in PdfReader(policy_path).pages)
 
     denial = extract_denial_reason(denial_text)
@@ -382,9 +419,7 @@ def run(denial_path, policy_path, chart_path) -> tuple[str, dict]:
     print(f"Policy criterion: {criterion['criterion_text']} [{criterion['section']}]", file=sys.stderr)
     print(f"Evidence: {len(verified)}/{len(evidence)} quotes verified", file=sys.stderr)
 
-    m = re.search(r"^\s*Date:\s*(\d{1,2}/\d{1,2}/\d{4})", denial_text, re.M)
-    denial_date = _parse_date(m[1]) if m else None
-    print(f"Denial date: {denial_date:%m/%d/%Y}" if denial_date else "Denial date: not found", file=sys.stderr)
+    print(f"Denial date: {denial_date:%m/%d/%Y}", file=sys.stderr)
     decision = decide(verified, criterion["criterion_text"], denial_date)
     if not decision["supported"]:
         return insufficient_report(criterion, decision), decision

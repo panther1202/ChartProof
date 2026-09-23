@@ -1,0 +1,13 @@
+{
+  "verdict": "letter",
+  "weeks": 6.0,
+  "required_citations": [
+    "03/02",
+    "03/23",
+    "04/13",
+    "04/15"
+  ],
+  "optional_citations": [],
+  "forbidden_citations": [],
+  "reviewed_by": "panth"
+}

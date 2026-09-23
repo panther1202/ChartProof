@@ -1,0 +1,19 @@
+SYNTHETIC TEST DATA - fictional patient, not a real medical record.
+Patient: Morgan Reyes (synthetic)        DOB: 04/18/1979        MRN: SYN-0006
+
+=== 05/22/2025 | Physical Therapy Initial Evaluation | Jordan Kim, PT ===
+Physical therapy initial evaluation for low back pain radiating to the right leg.
+Pain 7/10. Neurologic screen normal.
+Plan: physical therapy 2x/week for 6 to 8 weeks with a home exercise program.
+
+=== 06/12/2025 | Physical Therapy Progress Note | Jordan Kim, PT ===
+Completed 6 physical therapy sessions. Pain remains 7/10. No improvement.
+
+=== 07/10/2025 | Physical Therapy Discharge Summary | Jordan Kim, PT ===
+Final physical therapy session today. Completed 7 weeks of physical therapy
+(05/22/2025 to 07/10/2025), 14 sessions. No improvement. Pain 7/10.
+
+=== 03/02/2026 | Primary Care Follow-up | Morgan Lee, MD ===
+Low back pain with right leg radiation persists. Pain 7/10.
+No treatment since physical therapy ended in July 2025.
+Ordering MRI lumbar spine without contrast.

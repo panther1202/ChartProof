@@ -72,6 +72,8 @@ Each rule lists the reason it exists and the commit that shipped it.
 | Every result row carries a commit hash; a change commit's own row says `pending` until the next doc-only commit fills it in | Results from uncommitted or mixed code versions are not comparable, and a commit cannot contain its own hash. | `ccea765`; `pending` convention `fe383f9` |
 | End-to-end tests run only when `CHARTPROOF_LLM=1` is set on the command line; plain `pytest` is offline | Skipping on key presence failed open: `appeal.py` loads `.env` at import, so plain `pytest` called the LLM, and PowerShell cannot blank a key (an empty assignment deletes it and `.env` refills it). | `6e62ac2` |
 | The opt-in is read before `.env` loads, so a `.env` line cannot turn it on; once opted in, a missing key or `data/policy.pdf` fails the tests instead of skipping them | Read after `.env`, one `CHARTPROOF_LLM=1` line there reopened the fail-open; a silent skip exits 0 and could be logged as a pass. | `60e11ac` |
+| Agent skills write to GitHub Issues (create, comment, label, assign, close) only inside a skill the user invoked; out-of-scope items found mid-task still go to Known limitations below | Otherwise skills could file issues for items CLAUDE.md sends to this doc, and the two lists would drift apart. | pending |
+| Decisions and rules live in this table, not in `docs/adr/` | The agent-skills domain template records decisions as ADRs; a second record would escape the Shipped-in gate. | pending |
 
 ## Test data and ground truth
 

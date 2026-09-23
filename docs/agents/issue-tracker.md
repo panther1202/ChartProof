@@ -2,6 +2,10 @@
 
 Issues and specs for this repo live as GitHub issues. Use the `gh` CLI for all operations.
 
+Write to GitHub (create, comment, label, assign, close) only inside a skill the user invoked.
+Out-of-scope items found mid-task still go to "Known limitations and open questions" in
+docs/PROJECT.md, per CLAUDE.md.
+
 ## Conventions
 
 - **Create an issue**: `gh issue create --title "..." --body "..."`. Use a heredoc for multi-line bodies.
@@ -28,9 +32,6 @@ GitHub shares one number space across issues and PRs, so a bare `#42` may be eit
 ## When a skill says "publish to the issue tracker"
 
 Create a GitHub issue.
-
-Only when a skill is explicitly invoked to publish. Out-of-scope items found mid-task still go to
-"Known limitations and open questions" in docs/PROJECT.md, per CLAUDE.md.
 
 ## When a skill says "fetch the relevant ticket"
 

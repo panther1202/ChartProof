@@ -10,6 +10,10 @@ How the engineering skills should consume this repo's domain documentation when 
 
 If any of these files don't exist, **proceed silently**. Don't flag their absence; don't suggest creating them upfront. The `/domain-modeling` skill (reached via `/grill-with-docs` and `/improve-codebase-architecture`) creates them lazily when terms or decisions actually get resolved.
 
+ChartProof exception: decisions and rules are recorded in the Design decisions table in
+docs/PROJECT.md (a CLAUDE.md hard gate), not in `docs/adr/`. Read that table where this file
+says ADRs, and never create `docs/adr/`.
+
 ## File structure
 
 Single-context repo (most repos):

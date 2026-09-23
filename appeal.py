@@ -7,11 +7,12 @@ policy section, or "INSUFFICIENT DOCUMENTATION" with the unmet criterion and mis
 Diagnostics (including every dropped quote) go to stderr.
 """
 import argparse
+import calendar
 import os
 import re
 import sys
 import time
-from datetime import date, datetime, timedelta
+from datetime import date, datetime
 from functools import cache
 from pathlib import Path
 from typing import Literal
@@ -247,7 +248,13 @@ def _amount(unit: str, text: str) -> int | None:
 
 
 # 5
-def decide(verified_evidence: list[dict], criterion_text: str) -> dict:
+def _months_before(d: date, months: int) -> date:
+    """Same day of the month, `months` calendar months earlier (clamped to the month's last day)."""
+    y, m = divmod(d.year * 12 + d.month - 1 - months, 12)
+    return date(y, m + 1, min(d.day, calendar.monthrange(y, m + 1)[1]))
+
+
+def decide(verified_evidence: list[dict], criterion_text: str, denial_date: date | None = None) -> dict:
     """The LLM only sorts evidence items into roles; all date arithmetic is done here in Python."""
     decision = {"supported": False, "supporting": [], "missing": [], "weeks_needed": _amount("weeks?", criterion_text)}
     if not verified_evidence:
@@ -271,27 +278,39 @@ def decide(verified_evidence: list[dict], criterion_text: str) -> dict:
     pick = lambda ids: [verified_evidence[i] for i in sorted(set(ids)) if 0 <= i < len(verified_evidence)]
     failure, contrary = pick(j.failure_items), pick(j.contrary_items)
     when = lambda e: _parse_date(e["note_date"])
+    span = lambda items: (when(max(items, key=when)) - when(min(items, key=when))).days
 
-    # Treatment weeks = first to last verified treatment_session date. Follow-ups never count.
-    sessions = [e for e in verified_evidence if e.get("type") == "treatment_session"]
+    # Treatment weeks = first to last verified treatment_session (medication or PT). Follow-ups never count.
+    sessions = sorted((e for e in verified_evidence if e.get("type") == "treatment_session"), key=when)
     weeks_needed, months = decision["weeks_needed"], _amount("months?", criterion_text)
-    if months:  # only sessions inside the look-back window count
-        cutoff = max(map(when, verified_evidence)) - timedelta(days=round(months * 30.44))
-        sessions = [e for e in sessions if when(e) >= cutoff]
+    counted = sessions
+    if months:  # the look-back window ends at the denial date
+        if not denial_date:
+            raise SystemExit(f"The criterion has a {months}-month window but the denial letter has no 'Date: MM/DD/YYYY' line.")
+        cutoff = _months_before(denial_date, months)
+        counted = [e for e in sessions if when(e) >= cutoff]
 
     problems, missing = [], []
     if not sessions:
         problems.append("No verified chart evidence of a conservative treatment session.")
         missing.append("Dated notes documenting conservative treatment sessions")
     else:
-        first, last = min(sessions, key=when), max(sessions, key=when)
-        days = (when(last) - when(first)).days
-        decision.update(first=first, last=last, days=days, weeks=round(days / 7, 1))
+        days = span(sessions)
+        decision["weeks"] = round(days / 7, 1)
         if weeks_needed and days < weeks_needed * 7:
             problems.append(f"Verified treatment sessions span only {days / 7:.1f} weeks "
-                            f"({first['note_date']} to {last['note_date']}); the criterion requires at least {weeks_needed} weeks.")
+                            f"({sessions[0]['note_date']} to {sessions[-1]['note_date']}); the criterion requires at least {weeks_needed} weeks.")
             missing.append(f"Notes documenting at least {weeks_needed} weeks of conservative treatment"
                            + (f" within the last {months} months" if months else ""))
+        elif months and (not counted or (weeks_needed and span(counted) < weeks_needed * 7)):
+            inside = f"only {span(counted) / 7:.1f} weeks of it falls" if counted else "none of it falls"
+            problems.append(f"Verified treatment ran {sessions[0]['note_date']} to {sessions[-1]['note_date']}, but {inside} "
+                            f"inside the {months}-month window before the denial date {denial_date:%m/%d/%Y} "
+                            f"(window starts {cutoff:%m/%d/%Y}).")
+            missing.append(f"Notes documenting conservative treatment after {cutoff:%m/%d/%Y}"
+                           + (f" lasting at least {weeks_needed} weeks" if weeks_needed else ""))
+        if counted:  # the span the letter states and cites
+            decision.update(first=counted[0], last=counted[-1], days=span(counted))
     if not failure:
         problems.append("No verified chart evidence that conservative treatment failed.")
         missing.append("A note documenting lack of improvement after treatment")
@@ -302,8 +321,10 @@ def decide(verified_evidence: list[dict], criterion_text: str) -> dict:
 
     if problems:
         return {**decision, "reason": " ".join(problems), "missing": missing}
-    reason = f"Verified treatment sessions span {days / 7:.1f} weeks with documented failure."
-    return {**decision, "supported": True, "reason": reason, "supporting": pick(j.treatment_items + j.failure_items)}
+    reason = f"Verified treatment sessions span {decision['days'] / 7:.1f} weeks with documented failure."
+    # Letter cites every counted treatment session plus the outcome (failure) evidence, which may be follow-ups.
+    supporting = [e for e in verified_evidence if e in counted or e in failure]
+    return {**decision, "supported": True, "reason": reason, "supporting": supporting}
 
 
 # 6
@@ -361,7 +382,10 @@ def run(denial_path, policy_path, chart_path) -> tuple[str, dict]:
     print(f"Policy criterion: {criterion['criterion_text']} [{criterion['section']}]", file=sys.stderr)
     print(f"Evidence: {len(verified)}/{len(evidence)} quotes verified", file=sys.stderr)
 
-    decision = decide(verified, criterion["criterion_text"])
+    m = re.search(r"^\s*Date:\s*(\d{1,2}/\d{1,2}/\d{4})", denial_text, re.M)
+    denial_date = _parse_date(m[1]) if m else None
+    print(f"Denial date: {denial_date:%m/%d/%Y}" if denial_date else "Denial date: not found", file=sys.stderr)
+    decision = decide(verified, criterion["criterion_text"], denial_date)
     if not decision["supported"]:
         return insufficient_report(criterion, decision), decision
     return draft_letter(denial["service"], criterion, decision), decision

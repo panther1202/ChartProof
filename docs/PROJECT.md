@@ -111,6 +111,7 @@ The biggest limitation is that nothing has been run end to end since `0a33434`: 
 - **Claude Code has read the blind key** while writing the scorer (`0285a65`). Two pipeline commits followed: `30eedd0` (six-month window, a verdict-logic change) and `e169ac1` (date formats, INPUT ERROR, quote-mark matching, display cleaning). Read the blind score with that in mind.
 - **Free model reliability.** 15 of 35 requests (43%) in the last clean run were empty-reply retries; a live demo needs a separately chosen model.
 - **One criterion, one policy.** No retrieval, no other services, no red-flag exceptions.
+- **Plain `pytest` is not offline.** `appeal.py` loads `.env` at import, before `test_appeal.py` decides whether to skip the end-to-end tests, so with a key in `.env` and `data/policy.pdf` present they call the LLM. Offline runs blank the keys: `OPENROUTER_API_KEY= GEMINI_API_KEY= pytest`.
 
 * [x] Review the five pending cases and flip `reviewed_by` to panth (committed with the stale case in `938191c`)
 * [x] Six-month window check is in decide() since `30eedd0`

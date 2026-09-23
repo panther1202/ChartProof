@@ -71,7 +71,7 @@ Each rule lists the reason it exists and the commit that shipped it.
 | Policy PDF is downloaded, not committed | The guideline is copyrighted. | `5f18ba7` |
 | Every result row carries a commit hash | Results from uncommitted or mixed code versions are not comparable. | `ccea765` |
 | End-to-end tests run only when `CHARTPROOF_LLM=1` is set on the command line; plain `pytest` is offline | Skipping on key presence failed open: `appeal.py` loads `.env` at import, so plain `pytest` called the LLM, and PowerShell cannot blank a key (an empty assignment deletes it and `.env` refills it). | `6e62ac2` |
-| The opt-in is read before `.env` loads, so a `.env` line cannot turn it on; once opted in, a missing key or `data/policy.pdf` fails the tests instead of skipping them | Read after `.env`, one `CHARTPROOF_LLM=1` line there reopened the fail-open; a silent skip exits 0 and could be logged as a pass. | pending |
+| The opt-in is read before `.env` loads, so a `.env` line cannot turn it on; once opted in, a missing key or `data/policy.pdf` fails the tests instead of skipping them | Read after `.env`, one `CHARTPROOF_LLM=1` line there reopened the fail-open; a silent skip exits 0 and could be logged as a pass. | `60e11ac` |
 
 ## Test data and ground truth
 
@@ -98,7 +98,7 @@ The latest trusted result is 13/13 tests at commit `0a33434`; the first blind ru
 
 | Date (ET) | Commit | Model | Run | Outcome | Status |
 | --- | --- | --- | --- | --- | --- |
-| 2026-09-23 | pending | none | `git archive` of the commit into a scratch folder with a fake `.env`, dead proxy (`HTTPS_PROXY=http://127.0.0.1:9`), `.venv/Scripts/python.exe -m pytest -q`: (A) `.env` holds `CHARTPROOF_LLM=1` and a fake key, opt-in unset; (B) `CHARTPROOF_LLM=1` on the command line, no key, no `data/policy.pdf`; (C) as B with `data/policy.pdf` | pending | Offline check that a `.env` opt-in is ignored and missing prerequisites fail; no provider call is possible |
+| 2026-09-23 | `60e11ac` | none | `git archive` of the commit into a scratch folder with a fake `.env`, dead proxy (`HTTPS_PROXY=http://127.0.0.1:9`), `.venv/Scripts/python.exe -m pytest -q`: (A) `.env` holds `CHARTPROOF_LLM=1` and a fake key, opt-in unset; (B) `CHARTPROOF_LLM=1` on the command line, no key, no `data/policy.pdf`; (C) as B with `data/policy.pdf` | A: 17 passed, 10 skipped. B: 10 failed (FileNotFoundError), 17 passed. C: 10 failed (SystemExit: no API key), 17 passed. Repo itself, plain `pytest` with keys in `.env`: 17 passed, 10 skipped | Offline check that a `.env` opt-in is ignored and missing prerequisites fail; no provider call is possible |
 | 2026-09-23 | `6e62ac2` | none | `env -u CHARTPROOF_LLM HTTPS_PROXY=http://127.0.0.1:9 HTTP_PROXY=http://127.0.0.1:9 .venv/Scripts/python.exe -m pytest -rs -q`, keys in `.env` | 17 passed, 10 skipped (every end-to-end test) | Offline check of the opt-in gate; the dead proxy blocks any provider call |
 | 2026-09-23 | scripts `0285a65`, pipeline uncommitted | nemotron-3-super-120b-a12b:free | Blind set, 3 of 20 | All 3 INSUFFICIENT; 0 of 12 quotes verified because note dates were not parsed | Discarded; rerun after the parse fix |
 | 2026-09-22, 8:00 pm | `0a33434` | nemotron-3-super-120b-a12b:free | 5 hand-built cases + pytest | 13/13 tests; all verdicts and weeks correct; 15 of 35 requests were empty-reply retries | Trusted, except messy had no weeks or citation assertion then |

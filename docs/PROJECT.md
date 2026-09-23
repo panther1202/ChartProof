@@ -70,6 +70,7 @@ Each rule lists the reason it exists and the commit that shipped it.
 | Provider-agnostic via OpenRouter | Gemini's free tier hit 503s and a 20-requests-a-day cap; swapping models is one setting. | `5f18ba7` |
 | Policy PDF is downloaded, not committed | The guideline is copyrighted. | `5f18ba7` |
 | Every result row carries a commit hash | Results from uncommitted or mixed code versions are not comparable. | `ccea765` |
+| End-to-end tests run only with `CHARTPROOF_LLM=1` (plus a key and `data/policy.pdf`); plain `pytest` is offline | Skipping on key presence failed open: `appeal.py` loads `.env` at import, so plain `pytest` called the LLM, and PowerShell cannot blank a key (an empty assignment deletes it and `.env` refills it). | the commit after `024a441` |
 
 ## Test data and ground truth
 
@@ -96,6 +97,7 @@ The latest trusted result is 13/13 tests at commit `0a33434`; the first blind ru
 
 | Date (ET) | Commit | Model | Run | Outcome | Status |
 | --- | --- | --- | --- | --- | --- |
+| 2026-09-23 | the commit after `024a441` | none | Plain `pytest` with keys in `.env` and `CHARTPROOF_LLM` unset | 17 passed, 10 skipped (every end-to-end test) | Offline check of the opt-in gate; no LLM call |
 | 2026-09-23 | scripts `0285a65`, pipeline uncommitted | nemotron-3-super-120b-a12b:free | Blind set, 3 of 20 | All 3 INSUFFICIENT; 0 of 12 quotes verified because note dates were not parsed | Discarded; rerun after the parse fix |
 | 2026-09-22, 8:00 pm | `0a33434` | nemotron-3-super-120b-a12b:free | 5 hand-built cases + pytest | 13/13 tests; all verdicts and weeks correct; 15 of 35 requests were empty-reply retries | Trusted, except messy had no weeks or citation assertion then |
 | 2026-09-22 | none (pre-commit) | nemotron-3-super-120b-a12b:free | 3 cases + pytest | Verdicts right, weeks wrong (2.0 vs 3.0, 7.3 vs 7.0) | Superseded |
@@ -111,11 +113,9 @@ The biggest limitation is that nothing has been run end to end since `0a33434`: 
 - **Claude Code has read the blind key** while writing the scorer (`0285a65`). Two pipeline commits followed: `30eedd0` (six-month window, a verdict-logic change) and `e169ac1` (date formats, INPUT ERROR, quote-mark matching, display cleaning). Read the blind score with that in mind.
 - **Free model reliability.** 15 of 35 requests (43%) in the last clean run were empty-reply retries; a live demo needs a separately chosen model.
 - **One criterion, one policy.** No retrieval, no other services, no red-flag exceptions.
-- **Plain `pytest` is not offline.** `appeal.py` loads `.env` at import, before `test_appeal.py` decides whether to skip the end-to-end tests, so with a key in `.env` and `data/policy.pdf` present they call the LLM. The README's Test section still says to run plain `pytest`. Offline runs blank the keys in Git Bash: `OPENROUTER_API_KEY= GEMINI_API_KEY= .venv/Scripts/python.exe -m pytest`. PowerShell has no equivalent: assigning `''` to `$env:OPENROUTER_API_KEY` deletes the variable, so `.env` fills it back in.
-
 * [x] Review the five pending cases and flip `reviewed_by` to panth (committed with the stale case in `938191c`)
 * [x] Six-month window check is in decide() since `30eedd0`
-* [ ] Rerun the hand-built cases and pytest at HEAD and log the result
+* [ ] Rerun the hand-built cases and pytest at HEAD (`CHARTPROOF_LLM=1 pytest`) and log the result
 * [ ] Blind case\_002 is a neck-pain chart against a lumbar policy: generator mistake or a deliberate mismatch test? Answer from the score, not the key
 * [ ] Choose a demo model
 * [ ] Make the repo public after the blind run is scored

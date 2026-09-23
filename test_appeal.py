@@ -17,9 +17,11 @@ from appeal import _heading_above, run, verify
 ROOT = Path(__file__).parent
 CASES = ROOT / "cases"
 POLICY = ROOT / "data" / "policy.pdf"
+# Opt-in, not key presence: appeal.py loads .env at import, so a key is almost always set.
 needs_llm = pytest.mark.skipif(
-    not ((os.environ.get("GEMINI_API_KEY") or os.environ.get("OPENROUTER_API_KEY")) and POLICY.exists()),
-    reason="needs GEMINI_API_KEY (or OPENROUTER_API_KEY) and data/policy.pdf (run fetch_policy.py)",
+    not (os.environ.get("CHARTPROOF_LLM") == "1"
+         and (os.environ.get("GEMINI_API_KEY") or os.environ.get("OPENROUTER_API_KEY")) and POLICY.exists()),
+    reason="calls the LLM: needs CHARTPROOF_LLM=1, GEMINI_API_KEY (or OPENROUTER_API_KEY) and data/policy.pdf",
 )
 # Ground truth lives in cases/<case>/expected.json and is set by a human reviewer, never from output.
 EXPECTED = {p.parent.name: json.loads(p.read_text(encoding="utf-8")) for p in sorted(CASES.glob("*/expected.json"))}

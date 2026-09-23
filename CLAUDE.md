@@ -26,6 +26,9 @@ Before any commit:
 - docs/PROJECT.md is updated in the same commit if behaviour, tests or results changed:
   a Results log row with the hash, and a Design decisions row for any new rule. Never mark
   a rule as shipped before its commit exists.
+  A commit cannot contain its own hash, so the change commit writes `pending` in those hash
+  cells and in the outcome of any run not yet made at that hash. The next commit, doc-only,
+  replaces each `pending` once the checks have run against that hash.
 Always:
 - Never read ground_truth/ except inside score_blind.py when I run it.
 - Never edit expected.json values to match pipeline output. On a mismatch, report and stop.
@@ -62,4 +65,4 @@ its stated finish line, stop and tell me.
 
 # ChartProof
 
-Any commit that changes pipeline behaviour, tests or results also updates docs/PROJECT.md in the same commit: a Results log row with the commit hash, and a Design decisions row for any new rule. Never mark a rule as shipped before its commit.
+Any commit that changes pipeline behaviour, tests or results also updates docs/PROJECT.md in the same commit: a Results log row with the commit hash, and a Design decisions row for any new rule. Never mark a rule as shipped before its commit. Hash cells follow the `pending` convention under Hard gates.

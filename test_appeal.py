@@ -11,18 +11,17 @@ from types import SimpleNamespace
 import pytest
 import requests
 
-import appeal
-from appeal import _heading_above, run, verify
+# Opt-in, not key presence, read before appeal loads .env: a .env line must never turn LLM calls on.
+# Once opted in, a missing key or data/policy.pdf fails the tests instead of skipping them.
+LLM_OPT_IN = os.environ.get("CHARTPROOF_LLM") == "1"
+
+import appeal  # noqa: E402
+from appeal import _heading_above, run, verify  # noqa: E402
 
 ROOT = Path(__file__).parent
 CASES = ROOT / "cases"
 POLICY = ROOT / "data" / "policy.pdf"
-# Opt-in, not key presence: appeal.py loads .env at import, so a key is almost always set.
-needs_llm = pytest.mark.skipif(
-    not (os.environ.get("CHARTPROOF_LLM") == "1"
-         and (os.environ.get("GEMINI_API_KEY") or os.environ.get("OPENROUTER_API_KEY")) and POLICY.exists()),
-    reason="calls the LLM: needs CHARTPROOF_LLM=1, GEMINI_API_KEY (or OPENROUTER_API_KEY) and data/policy.pdf",
-)
+needs_llm = pytest.mark.skipif(not LLM_OPT_IN, reason="calls the LLM: set CHARTPROOF_LLM=1 on the command line")
 # Ground truth lives in cases/<case>/expected.json and is set by a human reviewer, never from output.
 EXPECTED = {p.parent.name: json.loads(p.read_text(encoding="utf-8")) for p in sorted(CASES.glob("*/expected.json"))}
 

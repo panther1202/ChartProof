@@ -95,7 +95,7 @@ If the chart has no dated note headers, or the denial has no date line, the tool
 pytest
 ```
 
-The `verify()`, section-heading, empty-reply, six-month-window, input-error, date-format, quote-mark and policy-display tests run offline. The end-to-end tests call the LLM, so they are skipped unless `CHARTPROOF_LLM=1` is set, `GEMINI_API_KEY` or `OPENROUTER_API_KEY` is set (in the environment or `.env`) and `data/policy.pdf` exists:
+The `verify()`, section-heading, empty-reply, six-month-window, input-error, date-format, quote-mark and policy-display tests run offline. The end-to-end tests call the LLM, so they are skipped unless `CHARTPROOF_LLM=1` is set on the command line; a `CHARTPROOF_LLM` line in `.env` is ignored. Once opted in, they fail if neither `GEMINI_API_KEY` nor `OPENROUTER_API_KEY` is set (in the environment or `.env`) or `data/policy.pdf` is missing:
 
 ```bash
 CHARTPROOF_LLM=1 pytest

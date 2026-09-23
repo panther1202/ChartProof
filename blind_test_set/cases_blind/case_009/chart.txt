@@ -1,0 +1,14 @@
+SYNTHETIC TEST DATA - fictional, not a real record.
+Patient: Priya Nair | ID: FX-10489
+
+2026-05-18
+PT evaluation for cervical pain.
+
+2026-06-29
+URI visit. No musculoskeletal discussion.
+
+2026-06-29
+PT discharge: therapy dates 05/18-06/29, exactly 6 weeks. Pain unchanged; no meaningful relief.
+
+2026-07-10
+Medication refill.

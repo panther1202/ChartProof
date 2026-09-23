@@ -1,0 +1,11 @@
+SYNTHETIC TEST DATA - fictional, not a real record.
+Patient: Grace Turner | ID: FX-10497
+
+2026-03-23
+Naproxen initiated for lumbar pain.
+
+2026-05-07
+Follow-up: naproxen taken for 6 weeks 3 days. Patient reports no relief and medication is stopped.
+
+2026-05-20
+URI visit, unrelated.

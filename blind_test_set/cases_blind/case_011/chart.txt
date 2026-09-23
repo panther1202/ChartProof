@@ -1,0 +1,17 @@
+SYNTHETIC TEST DATA - fictional, not a real record.
+Patient: Sofia Reed | ID: FX-10491
+
+2026-06-08
+PT evaluation. Plan for weekly treatment.
+
+2026-06-22
+PT visit. Patient missed the prior scheduled visit.
+
+2026-07-06
+PT visit. Persistent pain; partial relief only.
+
+2026-07-23
+PT discharge: treatment episode spans 6 weeks 3 days. Several visits missed, but treatment remained active during the episode. Symptoms only partially improved.
+
+2026-08-01
+Routine lab visit.

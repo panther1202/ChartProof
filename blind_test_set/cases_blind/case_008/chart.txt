@@ -1,0 +1,14 @@
+SYNTHETIC TEST DATA - fictional, not a real record.
+Patient: Caleb Foster | ID: FX-10488
+
+2026-02-20
+PT begins for knee pain.
+
+2026-04-06
+PT discharge: 6 weeks 3 days of therapy completed. Patient reports no relief.
+
+2026-04-30
+Referral summary: "PT >6wk, failed."
+
+2026-05-01
+No additional PT documented.

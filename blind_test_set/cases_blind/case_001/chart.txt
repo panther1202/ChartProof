@@ -1,0 +1,14 @@
+SYNTHETIC TEST DATA - fictional, not a real record.
+Patient: Maya Chen | ID: FX-10481
+
+2026-07-06
+Medication list: naproxen 500 mg PO BID PRN back pain.
+
+2026-09-01
+Medication refill. No assessment of response.
+
+2026-09-21
+Follow-up for persistent low-back pain. Patient reports taking naproxen daily since early July with no meaningful relief. Provider documents that medication trial was continued for about 7 weeks and did not improve symptoms.
+
+2026-09-22
+No new treatment orders.

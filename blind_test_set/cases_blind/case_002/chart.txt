@@ -1,0 +1,14 @@
+SYNTHETIC TEST DATA - fictional, not a real record.
+Patient: Jonah Brooks | ID: FX-10482
+
+2026-07-14
+PT evaluation for neck pain. Home program and supervised exercises initiated.
+
+2026-08-22
+PT progress note: patient attended intermittently; persistent pain. Total treatment period from 07/14 through 08/22 is 5 weeks 4 days. Patient stopped attending after this visit.
+
+2026-09-10
+Later summary: "PT x6wk, failed."
+
+2026-09-20
+No further therapy documented.

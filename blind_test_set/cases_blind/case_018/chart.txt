@@ -1,0 +1,11 @@
+SYNTHETIC TEST DATA - fictional, not a real record.
+Patient: Henry Scott | ID: FX-10498
+
+2026-06-12
+Orthopedic visit. Persistent knee pain.
+
+2026-08-01
+Specialist summary: "PT x7wk, failed; no meaningful relief." No individual PT notes are attached.
+
+2026-08-15
+Medication refill, unrelated.

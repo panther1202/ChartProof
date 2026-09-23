@@ -1,0 +1,11 @@
+SYNTHETIC TEST DATA - fictional, not a real record.
+Patient: Luis Romero | ID: FX-10486
+
+2026-08-01
+Chiropractic care initiated for neck pain.
+
+2026-09-11
+Chiropractic note: last visit today. Patient reports some improvement and declines additional visits. Course lasted 5 weeks 6 days.
+
+2026-09-18
+Referral request states "failed conservative care."

@@ -1,0 +1,14 @@
+SYNTHETIC TEST DATA - fictional, not a real record.
+Patient: Derek Young | ID: FX-10494
+
+2026-05-11
+Visit header: chiropractic care initiated.
+
+2026-07-02
+Visit header: routine follow-up.
+
+2026-07-03
+Provider follow-up note: patient completed chiropractic treatment from 05/11 through 07/02, about 7 weeks 3 days. Back pain did not improve. Conservative treatment considered failed.
+
+2026-07-15
+Medication refill.

@@ -1,0 +1,14 @@
+SYNTHETIC TEST DATA - fictional, not a real record.
+Patient: Olivia Grant | ID: FX-10499
+
+2026-08-03
+PT evaluation.
+
+2026-08-17
+PT visit. No relief.
+
+2026-09-11
+PT discharge. Course from 08/03 to 09/11; 5 weeks 4 days. Patient stopped because scheduling was difficult. No further therapy.
+
+2026-09-18
+Referral: "PT about 6 weeks, failed."

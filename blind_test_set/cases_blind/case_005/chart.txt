@@ -1,0 +1,11 @@
+SYNTHETIC TEST DATA - fictional, not a real record.
+Patient: Talia Morgan | ID: FX-10485
+
+2026-04-10
+Cyclobenzaprine prescribed for back spasm.
+
+2026-05-25
+Follow-up: cyclobenzaprine used as directed for 6 weeks 3 days. Patient reports no relief. Provider notes failed medication trial.
+
+2026-06-02
+Refill denied because symptoms unchanged.

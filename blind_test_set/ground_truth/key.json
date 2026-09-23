@@ -1,0 +1,319 @@
+{
+  "case_001": {
+    "verdict": true,
+    "treatment_weeks": 7.0,
+    "treatment_start": "2026-07-06",
+    "treatment_end": "2026-08-24",
+    "required_citations": [
+      "2026-09-21 follow-up"
+    ],
+    "optional_citations": [
+      "2026-07-06 medication list",
+      "2026-09-01 refill"
+    ],
+    "forbidden_citations": [
+      "2026-09-22 no new treatment orders"
+    ],
+    "reason": "Follow-up documents an NSAID trial of about seven weeks with no meaningful relief, entirely within the six-month window."
+  },
+  "case_002": {
+    "verdict": false,
+    "treatment_weeks": 5.6,
+    "treatment_start": "2026-07-14",
+    "treatment_end": "2026-08-22",
+    "required_citations": [
+      "2026-07-14 PT evaluation",
+      "2026-08-22 PT progress note"
+    ],
+    "optional_citations": [
+      "2026-09-10 later summary"
+    ],
+    "forbidden_citations": [
+      "2026-09-10 later summary if used as proof of six weeks"
+    ],
+    "reason": "The contemporaneous PT record covers only 39 days (5.6 weeks); the later rounded summary does not establish six weeks."
+  },
+  "case_003": {
+    "verdict": true,
+    "treatment_weeks": 6.0,
+    "treatment_start": "2026-03-23",
+    "treatment_end": "2026-05-04",
+    "required_citations": [
+      "2026-03-23 treatment start",
+      "2026-05-04 PT discharge"
+    ],
+    "optional_citations": [
+      "2026-05-05 medication list"
+    ],
+    "forbidden_citations": [],
+    "reason": "The documented conservative treatment spans exactly six weeks beginning on the six-month boundary, with only partial relief."
+  },
+  "case_004": {
+    "verdict": false,
+    "treatment_weeks": 8.0,
+    "treatment_start": "2026-06-01",
+    "treatment_end": "2026-07-27",
+    "required_citations": [
+      "2026-06-01 PT evaluation",
+      "2026-07-27 PT progress"
+    ],
+    "optional_citations": [
+      "2026-08-15 routine visit"
+    ],
+    "forbidden_citations": [],
+    "reason": "Eight weeks of PT are documented, but the outcome is substantial improvement rather than failure."
+  },
+  "case_005": {
+    "verdict": true,
+    "treatment_weeks": 6.4,
+    "treatment_start": "2026-04-10",
+    "treatment_end": "2026-05-25",
+    "required_citations": [
+      "2026-04-10 prescription",
+      "2026-05-25 follow-up"
+    ],
+    "optional_citations": [
+      "2026-06-02 refill note"
+    ],
+    "forbidden_citations": [],
+    "reason": "A muscle-relaxant trial lasted about 6.4 weeks within the window and the follow-up documents no relief."
+  },
+  "case_006": {
+    "verdict": false,
+    "treatment_weeks": 5.9,
+    "treatment_start": "2026-08-01",
+    "treatment_end": "2026-09-11",
+    "required_citations": [
+      "2026-08-01 chiropractic start",
+      "2026-09-11 chiropractic note"
+    ],
+    "optional_citations": [
+      "2026-09-18 referral request"
+    ],
+    "forbidden_citations": [
+      "2026-09-18 referral request as proof of duration"
+    ],
+    "reason": "Chiropractic care lasted 41 days (5.9 weeks), and the patient stopped after reporting some improvement."
+  },
+  "case_007": {
+    "verdict": false,
+    "treatment_weeks": 8.0,
+    "treatment_start": "2026-06-15",
+    "treatment_end": "2026-08-10",
+    "required_citations": [
+      "2026-06-15 home program",
+      "2026-08-10 patient report"
+    ],
+    "optional_citations": [
+      "2026-09-01 referral note"
+    ],
+    "forbidden_citations": [],
+    "reason": "Eight weeks of home exercise are documented with persistent pain, but this dataset treats home exercise alone as not qualifying conservative treatment for this criterion."
+  },
+  "case_008": {
+    "verdict": false,
+    "treatment_weeks": 6.4,
+    "treatment_start": "2026-02-20",
+    "treatment_end": "2026-04-06",
+    "required_citations": [
+      "2026-04-06 PT discharge"
+    ],
+    "optional_citations": [
+      "2026-04-30 referral summary"
+    ],
+    "forbidden_citations": [
+      "2026-02-20 PT start as within-window start"
+    ],
+    "reason": "The six-plus-week PT course began before the six-month window; only the portion after 2026-03-23 falls within it."
+  },
+  "case_009": {
+    "verdict": true,
+    "treatment_weeks": 6.0,
+    "treatment_start": "2026-05-18",
+    "treatment_end": "2026-06-29",
+    "required_citations": [
+      "2026-05-18 PT evaluation",
+      "2026-06-29 PT discharge"
+    ],
+    "optional_citations": [],
+    "forbidden_citations": [
+      "2026-06-29 URI visit",
+      "2026-07-10 medication refill"
+    ],
+    "reason": "PT is documented for exactly six weeks with unchanged pain and no meaningful relief; unrelated encounters do not alter the course."
+  },
+  "case_010": {
+    "verdict": false,
+    "treatment_weeks": 7.0,
+    "treatment_start": "2026-01-05",
+    "treatment_end": "2026-02-23",
+    "required_citations": [
+      "2026-01-05 medication start",
+      "2026-02-23 follow-up"
+    ],
+    "optional_citations": [],
+    "forbidden_citations": [],
+    "reason": "The seven-week NSAID course ended more than six months before the 2026-09-23 review date."
+  },
+  "case_011": {
+    "verdict": true,
+    "treatment_weeks": 6.4,
+    "treatment_start": "2026-06-08",
+    "treatment_end": "2026-07-23",
+    "required_citations": [
+      "2026-06-08 PT evaluation",
+      "2026-07-23 PT discharge"
+    ],
+    "optional_citations": [
+      "2026-07-06 PT visit"
+    ],
+    "forbidden_citations": [
+      "2026-08-01 routine lab visit"
+    ],
+    "reason": "The PT episode spans more than six weeks and documents only partial improvement despite missed visits."
+  },
+  "case_012": {
+    "verdict": false,
+    "treatment_weeks": 2.0,
+    "treatment_start": "2026-06-01",
+    "treatment_end": "2026-06-15",
+    "required_citations": [
+      "2026-06-01 medication start",
+      "2026-06-15 stop"
+    ],
+    "optional_citations": [
+      "2026-07-13 follow-up"
+    ],
+    "forbidden_citations": [
+      "2026-08-01 referral as duration evidence"
+    ],
+    "reason": "The patient declined the NSAID after about two weeks; the later rounded referral statement does not establish a six-week treatment course."
+  },
+  "case_013": {
+    "verdict": false,
+    "treatment_weeks": 6.4,
+    "treatment_start": "2026-07-01",
+    "treatment_end": "2026-08-15",
+    "required_citations": [
+      "2026-07-01 treatment start",
+      "2026-08-15 PT note"
+    ],
+    "optional_citations": [
+      "2026-09-01 PT discharge"
+    ],
+    "forbidden_citations": [],
+    "reason": "The treatment duration exceeds six weeks, but the record does not document failure or another qualifying lack-of-response outcome."
+  },
+  "case_014": {
+    "verdict": true,
+    "treatment_weeks": 7.3,
+    "treatment_start": "2026-05-11",
+    "treatment_end": "2026-07-02",
+    "required_citations": [
+      "2026-07-03 provider follow-up"
+    ],
+    "optional_citations": [
+      "2026-05-11 visit header",
+      "2026-07-02 visit header"
+    ],
+    "forbidden_citations": [
+      "2026-07-15 medication refill"
+    ],
+    "reason": "The follow-up is the only note that explicitly establishes the completed seven-plus-week chiropractic course and lack of improvement."
+  },
+  "case_015": {
+    "verdict": false,
+    "treatment_weeks": 5.3,
+    "treatment_start": "2026-08-03",
+    "treatment_end": "2026-09-09",
+    "required_citations": [
+      "2026-08-03 prescription",
+      "2026-09-09 follow-up"
+    ],
+    "optional_citations": [],
+    "forbidden_citations": [],
+    "reason": "The muscle-relaxant trial lasted about 5.3 weeks, below six weeks, despite minimal improvement."
+  },
+  "case_016": {
+    "verdict": true,
+    "treatment_weeks": 6.0,
+    "treatment_start": "2026-04-20",
+    "treatment_end": "2026-06-01",
+    "required_citations": [
+      "2026-04-20 PT evaluation",
+      "2026-06-02 follow-up"
+    ],
+    "optional_citations": [
+      "2026-06-01 PT note"
+    ],
+    "forbidden_citations": [
+      "2026-06-01 copied-forward improvement statement as outcome"
+    ],
+    "reason": "The follow-up establishes a six-week PT course and explicitly records unchanged pain and no relief, superseding copied-forward wording."
+  },
+  "case_017": {
+    "verdict": true,
+    "treatment_weeks": 6.4,
+    "treatment_start": "2026-03-23",
+    "treatment_end": "2026-05-07",
+    "required_citations": [
+      "2026-03-23 NSAID start",
+      "2026-05-07 follow-up"
+    ],
+    "optional_citations": [],
+    "forbidden_citations": [
+      "2026-05-20 URI visit"
+    ],
+    "reason": "NSAID treatment lasted more than six weeks beginning on the first day of the six-month window, with no relief documented at follow-up."
+  },
+  "case_018": {
+    "verdict": true,
+    "treatment_weeks": 7.0,
+    "treatment_start": "2026-06-12",
+    "treatment_end": "2026-07-31",
+    "required_citations": [
+      "2026-08-01 specialist summary"
+    ],
+    "optional_citations": [
+      "2026-06-12 orthopedic visit"
+    ],
+    "forbidden_citations": [
+      "2026-08-15 medication refill"
+    ],
+    "reason": "The later specialist summary explicitly records a seven-week PT course and failure within the window, even though individual PT notes are absent."
+  },
+  "case_019": {
+    "verdict": false,
+    "treatment_weeks": 5.6,
+    "treatment_start": "2026-08-03",
+    "treatment_end": "2026-09-11",
+    "required_citations": [
+      "2026-08-03 PT evaluation",
+      "2026-09-11 PT discharge"
+    ],
+    "optional_citations": [
+      "2026-09-18 referral"
+    ],
+    "forbidden_citations": [
+      "2026-09-18 referral as proof of six weeks"
+    ],
+    "reason": "The dated PT episode is only 39 days (5.6 weeks); the referral's approximate wording does not establish six weeks."
+  },
+  "case_020": {
+    "verdict": true,
+    "treatment_weeks": 9.0,
+    "treatment_start": "2026-05-01",
+    "treatment_end": "2026-07-03",
+    "required_citations": [
+      "2026-05-01 treatment start",
+      "2026-07-03 follow-up"
+    ],
+    "optional_citations": [
+      "2026-05-29 PT note"
+    ],
+    "forbidden_citations": [
+      "2026-07-10 no new treatment"
+    ],
+    "reason": "NSAID plus PT continued for nine weeks within the window; despite missed visits, the follow-up documents only partial relief."
+  }
+}

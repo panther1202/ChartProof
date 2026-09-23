@@ -1,0 +1,14 @@
+SYNTHETIC TEST DATA - fictional, not a real record.
+Patient: Marcus Bell | ID: FX-10492
+
+2026-06-01
+Ibuprofen started for low-back pain.
+
+2026-06-15
+Patient reports stomach upset and declines further ibuprofen.
+
+2026-07-13
+Follow-up: medication was used for approximately 2 weeks, then stopped. Pain persisted.
+
+2026-08-01
+Referral says "NSAID trial 6 weeks, failed."

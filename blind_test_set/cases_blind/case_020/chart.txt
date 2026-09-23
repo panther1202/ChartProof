@@ -1,0 +1,14 @@
+SYNTHETIC TEST DATA - fictional, not a real record.
+Patient: Samir Patel | ID: FX-10500
+
+2026-05-01
+PT initiated; ibuprofen also started.
+
+2026-05-29
+PT note: missed two visits. Continues PT and ibuprofen.
+
+2026-07-03
+Follow-up: conservative treatment episode ran from 05/01 through 07/03, 9 weeks. Patient reports only partial relief. Provider documents ongoing functional limitation.
+
+2026-07-10
+No new treatment.

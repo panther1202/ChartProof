@@ -1,0 +1,11 @@
+SYNTHETIC TEST DATA - fictional, not a real record.
+Patient: Nora Shah | ID: FX-10487
+
+2026-06-15
+Provider gives home exercise program for low-back pain.
+
+2026-08-10
+Patient reports doing exercises most days for about 8 weeks, with persistent pain.
+
+2026-09-01
+Referral note: "HEP x8 weeks, no relief."

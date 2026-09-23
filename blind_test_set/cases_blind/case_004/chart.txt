@@ -1,0 +1,11 @@
+SYNTHETIC TEST DATA - fictional, not a real record.
+Patient: Evan Price | ID: FX-10484
+
+2026-06-01
+PT evaluation for shoulder pain. Twice-weekly therapy planned.
+
+2026-07-27
+PT progress: completed 8 weeks of therapy. Range of motion and pain substantially improved. Patient elected to continue home exercises.
+
+2026-08-15
+Routine visit: shoulder remains improved.

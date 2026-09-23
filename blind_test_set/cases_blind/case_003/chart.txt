@@ -1,0 +1,11 @@
+SYNTHETIC TEST DATA - fictional, not a real record.
+Patient: Rina Alvarez | ID: FX-10483
+
+2026-03-23
+Started ibuprofen 600 mg three times daily for back pain and began supervised PT.
+
+2026-05-04
+PT discharge: treatment dates span 03/23 through 05/04, exactly 6 weeks. Patient reports only partial relief. PT and ibuprofen were continued during the interval.
+
+2026-05-05
+Medication list carries ibuprofen forward.

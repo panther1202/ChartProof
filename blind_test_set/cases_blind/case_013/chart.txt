@@ -1,0 +1,14 @@
+SYNTHETIC TEST DATA - fictional, not a real record.
+Patient: Iris Walker | ID: FX-10493
+
+2026-07-01
+Naproxen started. PT ordered.
+
+2026-08-15
+PT note: patient has continued PT and naproxen for approximately 6 weeks 3 days.
+
+2026-09-01
+PT discharge. No response assessment recorded.
+
+2026-09-10
+Referral: "conservative care completed."

@@ -1,0 +1,17 @@
+SYNTHETIC TEST DATA - fictional, not a real record.
+Patient: Aaron Cole | ID: FX-10496
+
+2026-04-20
+PT evaluation. Low-back pain.
+
+2026-05-18
+PT note: "tolerating therapy, continue plan."
+
+2026-06-01
+PT note: copied forward: "improving with therapy."
+
+2026-06-02
+Follow-up: PT completed from 04/20 through 06/01, 6 weeks 0 days. Patient states pain remains unchanged and reports no relief. Provider documents failure of conservative care.
+
+2026-06-15
+No new PT.

@@ -1,0 +1,11 @@
+SYNTHETIC TEST DATA - fictional, not a real record.
+Patient: Leah Kim | ID: FX-10495
+
+2026-08-03
+Tizanidine prescribed for neck spasm.
+
+2026-09-09
+Follow-up: used tizanidine for 5 weeks 2 days. Minimal change. Patient stopped medication.
+
+2026-09-20
+No further conservative treatment.

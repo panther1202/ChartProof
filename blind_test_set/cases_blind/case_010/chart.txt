@@ -1,0 +1,11 @@
+SYNTHETIC TEST DATA - fictional, not a real record.
+Patient: Owen Ellis | ID: FX-10490
+
+2026-01-05
+Meloxicam started for back pain.
+
+2026-02-23
+Follow-up: meloxicam used for 7 weeks. No relief. Medication stopped.
+
+2026-04-01
+No active conservative treatment documented.

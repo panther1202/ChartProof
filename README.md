@@ -9,6 +9,8 @@ Reads a denial letter, the payer policy PDF and a patient chart, then prints one
 
 Every quote the LLM returns is checked against the source text in plain Python before it is used. Dropped quotes, and the reason each one was dropped, are printed to stderr. Date arithmetic (for example, "at least six weeks of treatment") is done in Python.
 
+Treatment span rule: first to last conservative treatment of any type (medication or PT); follow-ups never extend the span but may be cited as outcome evidence. The six-month look-back window is measured from the denial letter's date (see [Input format](#input-format)).
+
 LLM: provider-agnostic via OpenRouter; tested on `nvidia/nemotron-3-super-120b-a12b:free`. Without `OPENROUTER_API_KEY` it calls Gemini (`gemini-3.8-flash`) through the google-genai SDK.
 
 All files under `cases/` are synthetic test data.
@@ -37,13 +39,16 @@ Optional environment variables (also read from `.env`):
 python appeal.py --denial cases/supported/denial.txt --policy data/policy.pdf --chart cases/supported/chart.txt
 ```
 
-The five cases:
+The six cases:
 
 - `cases/supported`: 7 weeks of PT, no improvement, pain 7/10.
 - `cases/insufficient`: 3 weeks of PT, then the patient declined further PT.
 - `cases/messy`: abbreviated notes with evidence spread across 4 notes, plus one unrelated note.
 - `cases/borderline_under`: PT for 5 weeks 5 days, then a physician follow-up at about 6.5 weeks reporting no improvement.
 - `cases/borderline_exact`: PT for exactly 6.0 weeks, no improvement.
+- `cases/stale`: a 7-week PT course that ended 8 months before the denial date.
+
+Each case has an `expected.json` holding its ground truth: verdict, weeks, required, optional and forbidden citation dates, and `reviewed_by`. A person sets these values; they are never generated from output.
 
 End-to-end results so far:
 
@@ -65,7 +70,24 @@ Retries in the 2026-09-23 run: 15, all empty-reply retries. Each was an HTTP 200
 
 Superseded rows ran before `decide()` counted only verified `treatment_session` dates. Before that change it relied on the model's own list of treatment notes, which undercounted `insufficient` (1–2 weeks instead of 3) and counted a follow-up visit in `supported` (7.3 weeks instead of 7.0). The `insufficient` chart's 02/23 note now records that a session took place that day, so the true span is exactly 3.0 weeks.
 
-Chart notes must each start with a header line such as `=== 03/02/2026 | ... ===`. The note date is read from that line and used to check each quote's `note_date`.
+## Input format
+
+Dates may be written as `MM/DD/YYYY` or `YYYY-MM-DD`, in any mix. They are stored as ISO dates internally; letters and reports show them as `MM/DD/YYYY`.
+
+Each chart note starts with a header line in one of these forms:
+
+```text
+=== 03/02/2026 | Physical Therapy Initial Evaluation | Jordan Kim, PT ===
+=== 2026-03-02 Physical Therapy Initial Evaluation ===
+03/02/2026
+2026-03-02
+```
+
+The last two are lines holding only a date. The note date is read from the header and used to check each quote's `note_date`.
+
+The denial letter needs a line starting `Date:` or `Review date:` followed by a date in either format, for example `Date: 04/28/2026` or `Review date: 2026-09-23`.
+
+If the chart has no dated note headers, or the denial has no date line, the tool prints `INPUT ERROR: <what failed>` to stderr and exits with status 1 before any LLM call. A parse failure never becomes a verdict.
 
 ## Test
 
@@ -73,4 +95,4 @@ Chart notes must each start with a header line such as `=== 03/02/2026 | ... ===
 pytest
 ```
 
-The `verify()` and section-heading tests run offline. The end-to-end tests call the LLM, so they are skipped unless `GEMINI_API_KEY` or `OPENROUTER_API_KEY` is set and `data/policy.pdf` exists.
+The `verify()`, section-heading, empty-reply, six-month-window, input-error, date-format, quote-mark and policy-display tests run offline. The end-to-end tests call the LLM, so they are skipped unless `GEMINI_API_KEY` or `OPENROUTER_API_KEY` is set and `data/policy.pdf` exists.
